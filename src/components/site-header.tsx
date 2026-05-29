@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Menu, X, CalendarDays } from "lucide-react";
 import { grandmaWillieContent, navItems } from "@/content/grandma-willie";
 
@@ -38,14 +39,14 @@ export function SiteHeader() {
             className="flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             aria-label="Grandma Willie — return to top"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-[var(--color-butter)] ring-2 ring-[var(--color-border)] transition-transform hover:scale-105">
-              <img
+              <Image
                 src="/logos/grandma-willie-mascot.png"
                 alt=""
                 width={44}
                 height={44}
                 className="h-full w-full object-cover object-top"
+                priority
                 aria-hidden="true"
               />
             </span>

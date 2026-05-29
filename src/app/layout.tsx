@@ -159,6 +159,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${fraunces.variable} ${dmSans.variable} h-full scroll-smooth antialiased`}
     >
       <head>
