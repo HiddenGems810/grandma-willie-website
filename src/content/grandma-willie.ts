@@ -21,10 +21,16 @@ export const grandmaWillieContent = {
     wordmark: "/logos/grandma-willie-wordmark.png",
     mascot: "/logos/grandma-willie-mascot.png",
   },
+
+  // ─── STATS CONFIG ──────────────────────────────────────────
+  // Update these numbers after checking the platforms.
+  // Last verified: 2026-05-29
+  statsLastUpdated: "2026-05-29" as const,
+
   hero: {
     eyebrow: "Alabama Homestyle Cooking",
     headline: "Southern cooking, Alabama soul, and the kind of kitchen love people remember.",
-    body: "Grandma Willie shares homestyle meals, family-rooted recipes, and warm kitchen moments from Alabama — built for followers, food lovers, and brands who want real Southern personality.",
+    body: "Grandma Willie shares homestyle meals, family-rooted recipes, and kitchen stories straight from Alabama. Whether you're a longtime follower, a food lover, or a brand looking for authentic Southern personality — you've come to the right kitchen.",
     primaryCta: "Book / Contact Grandma Willie",
     secondaryCta: "Watch Her Kitchen Videos",
     proofLine: "TikTok + Instagram community · Homestyle cooking · Alabama-rooted creator",
@@ -32,22 +38,22 @@ export const grandmaWillieContent = {
   bio: {
     eyebrow: "About Grandma Willie",
     title: "Rooted in Alabama. Made with love. Shared from the heart.",
-    body: "Grandma Willie brings the comfort of Southern home cooking to every video, every plate, and every story she shares. Her kitchen reflects family, resilience, laughter, and the kind of meals that bring people back to the table.",
+    body: "Grandma Willie has been cooking Southern food her whole life — not for a camera, but for family. The videos are just her way of letting more people pull up a chair. Her kitchen is full of real food, real stories, and the kind of warmth that reminds you of home.",
     values: [
       {
         icon: "home" as const,
         label: "Alabama Roots",
-        description: "A cooking voice shaped by home, heritage, and lived experience.",
+        description: "Every dish carries the flavors of home — shaped by decades of lived experience, not culinary school.",
       },
       {
         icon: "heart" as const,
-        label: "Family Warmth",
-        description: "Food that feels personal, familiar, and welcoming.",
+        label: "Family First",
+        description: "Food that feels personal. The kind you'd find on a Sunday table, made for the people you love.",
       },
       {
         icon: "utensils" as const,
-        label: "Homestyle Flavor",
-        description: "Simple, soulful meals made with care, not performance.",
+        label: "Homestyle, Not Fancy",
+        description: "Simple, soulful, and done right. No shortcuts, no performance — just good cooking.",
       },
     ],
     quote: "This kitchen holds everything — the love, the recipes, the memories.",

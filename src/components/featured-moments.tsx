@@ -1,5 +1,8 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 function TikTokIcon() {
   return (
@@ -45,14 +48,17 @@ const cardAccents = {
 
 export function FeaturedMoments() {
   const { follow, socialDestinations } = grandmaWillieContent;
+  const sectionRef = useScrollReveal();
 
   return (
     <section
       id="follow"
+      ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative overflow-hidden px-5 py-[var(--section-y-md)] sm:px-8 lg:px-12"
       style={{ background: "var(--color-butter)" }}
+      aria-labelledby="follow-heading"
     >
-      {/* Faint grid */}
+      {/* Faint grid texture */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.18]"
         style={{
@@ -65,28 +71,31 @@ export function FeaturedMoments() {
 
       <div className="relative mx-auto max-w-[var(--container)]">
         {/* Header */}
-        <p className="text-[0.7rem] font-black uppercase tracking-[0.24em] text-[var(--color-tomato)]">
-          {follow.eyebrow}
-        </p>
-        <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <h2
-            className="max-w-[20ch] leading-[0.92] text-[var(--color-cast-iron)]"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 900,
-              fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)",
-            }}
-          >
-            {follow.headline}
-          </h2>
-          <p className="max-w-[40ch] text-[0.95rem] leading-[1.75] text-[var(--color-warm-brown)] sm:text-right">
-            {follow.body}
+        <div data-reveal>
+          <p className="text-[0.72rem] font-black uppercase tracking-[0.26em] text-[var(--color-tomato)]">
+            {follow.eyebrow}
           </p>
+          <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <h2
+              id="follow-heading"
+              className="max-w-[20ch] leading-[0.92] text-[var(--color-cast-iron)]"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 900,
+                fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)",
+              }}
+            >
+              {follow.headline}
+            </h2>
+            <p className="max-w-[40ch] text-[0.98rem] leading-[1.78] text-[var(--color-warm-brown)] sm:text-right">
+              {follow.body}
+            </p>
+          </div>
         </div>
 
         {/* Cards */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {socialDestinations.map((dest) => {
+          {socialDestinations.map((dest, idx) => {
             const Icon = cardIcons[dest.source];
             const accent = cardAccents[dest.source];
             const isExternal = dest.kind === "external";
@@ -94,18 +103,22 @@ export function FeaturedMoments() {
             return (
               <article
                 key={dest.title}
-                className="group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] p-7 shadow-[var(--shadow-card)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-editorial)]"
+                data-reveal
+                className={`reveal-delay-${idx + 1} group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] p-7 shadow-[var(--shadow-card)] card-lift`}
                 style={{ background: accent.bg, color: accent.text }}
               >
                 {/* Corner ring decoration */}
                 <div
-                  className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full border-[20px] opacity-15 transition group-hover:scale-125"
+                  className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full border-[20px] opacity-15 transition-transform duration-500 group-hover:scale-125"
                   style={{ borderColor: accent.icon }}
                   aria-hidden="true"
                 />
 
                 {/* Icon */}
-                <div style={{ color: accent.icon }}>
+                <div
+                  className="transition-transform duration-300 group-hover:scale-110"
+                  style={{ color: accent.icon }}
+                >
                   <Icon />
                 </div>
 
@@ -117,7 +130,7 @@ export function FeaturedMoments() {
                 </h3>
 
                 <p
-                  className="mt-3 flex-1 text-[0.9rem] leading-[1.7]"
+                  className="mt-3 flex-1 text-[0.92rem] leading-[1.75]"
                   style={{ color: `color-mix(in srgb, ${accent.text} 80%, transparent)` }}
                 >
                   {dest.description}
@@ -127,11 +140,12 @@ export function FeaturedMoments() {
                   href={dest.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noreferrer" : undefined}
-                  className="mt-7 inline-flex min-h-[46px] items-center gap-2.5 self-start rounded-full px-5 text-sm font-black transition hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2"
+                  aria-label={isExternal ? `${dest.label} (opens in new tab)` : dest.label}
+                  className="mt-7 inline-flex min-h-[46px] items-center gap-2.5 self-start rounded-full px-5 text-sm font-black transition hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2"
                   style={{
-                    background: `color-mix(in srgb, ${accent.text} 12%, transparent)`,
+                    background: `color-mix(in srgb, ${accent.text} 14%, transparent)`,
                     color: accent.text,
-                    outline: `2px solid color-mix(in srgb, ${accent.text} 30%, transparent)`,
+                    outline: `2px solid color-mix(in srgb, ${accent.text} 28%, transparent)`,
                   }}
                 >
                   {dest.label}

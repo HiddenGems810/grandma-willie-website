@@ -108,6 +108,18 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION ?? "",
   },
+
+  // Explicit favicon declarations — overrides any Next.js defaults
+  icons: {
+    icon: [
+      { url: "/logos/grandma-willie-mascot.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png", sizes: "any" },
+    ],
+    apple: [
+      { url: "/icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/logos/grandma-willie-mascot.svg",
+  },
 };
 
 export default function RootLayout({

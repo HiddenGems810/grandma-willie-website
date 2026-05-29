@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Menu, X, CalendarDays } from "lucide-react";
 import { grandmaWillieContent, navItems } from "@/content/grandma-willie";
@@ -15,7 +14,7 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Trap scroll when mobile menu is open
+  // Lock scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -24,27 +23,30 @@ export function SiteHeader() {
   return (
     <>
       <header
+        role="banner"
         className={`sticky top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-cream)_90%,white)] shadow-[0_4px_24px_rgba(64,31,10,0.08)] backdrop-blur-2xl"
+            ? "border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-cream)_92%,white)] shadow-[0_4px_24px_rgba(64,31,10,0.08)] backdrop-blur-2xl"
             : "bg-transparent"
         }`}
       >
         <div className="mx-auto flex h-[76px] max-w-[var(--container)] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
+
           {/* Logo */}
           <a
             href="#"
-            className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded-lg"
-            aria-label="Grandma Willie — back to top"
+            className="flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+            aria-label="Grandma Willie — return to top"
           >
-            <span className="relative h-11 w-11 overflow-hidden rounded-full bg-[var(--color-butter)] ring-2 ring-[var(--color-border)]">
-              <Image
-                src={grandmaWillieContent.brand.mascot}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-[var(--color-butter)] ring-2 ring-[var(--color-border)] transition-transform hover:scale-105">
+              <img
+                src="/logos/grandma-willie-mascot.svg"
                 alt=""
-                fill
-                sizes="44px"
-                className="object-cover object-top"
-                priority
+                width={44}
+                height={44}
+                className="h-full w-full object-cover object-top"
+                aria-hidden="true"
               />
             </span>
             <span
@@ -64,7 +66,7 @@ export function SiteHeader() {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--color-warm-brown)] transition hover:text-[var(--color-tomato)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
+                className="nav-link text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--color-warm-brown)] transition-colors duration-200 hover:text-[var(--color-tomato)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded pb-0.5"
               >
                 {item.label}
               </a>
@@ -74,7 +76,7 @@ export function SiteHeader() {
           {/* Desktop CTA */}
           <a
             href="#contact"
-            className="hidden min-h-[44px] items-center gap-2 rounded-full bg-[var(--color-cast-iron)] px-5 text-sm font-black text-[var(--color-cream)] shadow-[0_8px_24px_rgba(20,11,7,0.24)] transition hover:-translate-y-0.5 hover:bg-[var(--color-tomato)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] md:inline-flex"
+            className="hidden min-h-[44px] items-center gap-2 rounded-full bg-[var(--color-cast-iron)] px-5 text-sm font-black text-[var(--color-cream)] shadow-[0_8px_24px_rgba(20,11,7,0.22)] transition-all duration-250 hover:-translate-y-0.5 hover:bg-[var(--color-tomato)] hover:shadow-[0_12px_32px_rgba(185,71,27,0.32)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] md:inline-flex"
           >
             <CalendarDays size={16} aria-hidden="true" />
             Book / Contact
@@ -90,13 +92,13 @@ export function SiteHeader() {
             </a>
             <button
               type="button"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               onClick={() => setMenuOpen((v) => !v)}
-              className="grid h-11 w-11 place-items-center rounded-full text-[var(--color-cast-iron)] transition hover:bg-[var(--color-butter)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+              className="grid h-11 w-11 place-items-center rounded-full text-[var(--color-cast-iron)] transition hover:bg-[var(--color-butter)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              {menuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -107,12 +109,12 @@ export function SiteHeader() {
         <div
           id="mobile-menu"
           role="dialog"
-          aria-label="Mobile navigation"
+          aria-label="Mobile navigation menu"
           aria-modal="true"
-          className="fixed inset-0 z-40 flex flex-col bg-[var(--color-cream)] pt-[76px]"
+          className="fixed inset-0 z-40 flex flex-col bg-[var(--color-cream)] pt-[76px] motion-safe:animate-[slideInDown_0.22s_ease-out]"
         >
           <nav
-            className="flex flex-1 flex-col gap-2 px-6 pt-8"
+            className="flex flex-1 flex-col gap-1 px-6 pt-8"
             aria-label="Mobile navigation links"
           >
             {navItems.map((item) => (
@@ -120,7 +122,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="flex min-h-[56px] items-center border-b border-[var(--color-border)] text-2xl font-black text-[var(--color-cast-iron)] transition hover:text-[var(--color-tomato)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+                className="flex min-h-[60px] items-center border-b border-[var(--color-border)] text-2xl font-black text-[var(--color-cast-iron)] transition-colors hover:text-[var(--color-tomato)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {item.label}
@@ -129,12 +131,32 @@ export function SiteHeader() {
             <a
               href="#contact"
               onClick={() => setMenuOpen(false)}
-              className="mt-6 inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[var(--color-tomato)] px-8 text-base font-black text-white shadow-[var(--shadow-button)] transition hover:bg-[var(--color-tomato-dark)]"
+              className="mt-8 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-full bg-[var(--color-tomato)] px-8 text-base font-black text-white shadow-[var(--shadow-button)] transition hover:bg-[var(--color-tomato-dark)]"
             >
               <CalendarDays size={18} aria-hidden="true" />
               Book / Contact Grandma Willie
             </a>
           </nav>
+
+          {/* Social quick links in mobile menu */}
+          <div className="px-6 pb-10 pt-4 flex gap-3">
+            <a
+              href={grandmaWillieContent.socialLinks.tiktok}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1 text-center rounded-full border border-[var(--color-border-dark)] py-3 text-xs font-black uppercase tracking-[0.14em] text-[var(--color-warm-brown)] transition hover:bg-[var(--color-butter)]"
+            >
+              TikTok
+            </a>
+            <a
+              href={grandmaWillieContent.socialLinks.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1 text-center rounded-full border border-[var(--color-border-dark)] py-3 text-xs font-black uppercase tracking-[0.14em] text-[var(--color-warm-brown)] transition hover:bg-[var(--color-butter)]"
+            >
+              Instagram
+            </a>
+          </div>
         </div>
       )}
     </>

@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 function RecipeCardDecor({ className = "" }: { className?: string }) {
   return (
@@ -20,11 +23,14 @@ function RecipeCardDecor({ className = "" }: { className?: string }) {
 
 export function HeroSection() {
   const { hero, socialStats, socialLinks } = grandmaWillieContent;
+  const sectionRef = useScrollReveal();
 
   return (
     <section
       id="home"
+      ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative isolate overflow-hidden px-5 pb-24 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pb-28 lg:pt-20"
+      aria-labelledby="hero-heading"
     >
       {/* Background layers */}
       <div
@@ -35,7 +41,6 @@ export function HeroSection() {
         }}
         aria-hidden="true"
       />
-      {/* Recipe-card grid overlay */}
       <div
         className="absolute inset-0 -z-10 opacity-[0.22]"
         style={{
@@ -45,29 +50,29 @@ export function HeroSection() {
         }}
         aria-hidden="true"
       />
-      {/* Warm vignette glow */}
       <div
         className="absolute -top-40 right-0 -z-10 h-[600px] w-[600px] rounded-full opacity-30"
-        style={{
-          background:
-            "radial-gradient(circle, var(--color-gold-soft) 0%, transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(circle, var(--color-gold-soft) 0%, transparent 70%)" }}
         aria-hidden="true"
       />
 
       <div className="mx-auto grid max-w-[var(--container)] items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-        {/* ── Left: Copy ─────────────────────── */}
-        <div className="motion-safe:animate-[fadeUp_0.65s_ease-out_both]">
+
+        {/* ── Left: Copy ─────────────────────────── */}
+        <div>
           {/* Eyebrow */}
           <p
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-dark)] bg-white/50 px-4 py-1.5 text-[0.7rem] font-black uppercase tracking-[0.24em] text-[var(--color-tomato)] backdrop-blur-sm"
+            data-reveal
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-dark)] bg-white/50 px-4 py-1.5 text-[0.72rem] font-black uppercase tracking-[0.24em] text-[var(--color-tomato)] backdrop-blur-sm"
           >
             {hero.eyebrow}
           </p>
 
-          {/* Headline with controlled line-breaks for editorial layout */}
+          {/* Headline */}
           <h1
-            className="mt-6 max-w-[760px] leading-[0.88] text-[var(--color-cast-iron)] tracking-[-0.04em]"
+            id="hero-heading"
+            data-reveal
+            className="reveal-delay-1 mt-6 max-w-[760px] leading-[0.88] text-[var(--color-cast-iron)] tracking-[-0.04em]"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 900,
@@ -76,23 +81,27 @@ export function HeroSection() {
           >
             Southern cooking,<br className="hidden sm:inline" />{" "}
             Alabama soul,<br className="hidden sm:inline" />{" "}
-            and the kind of kitchen love<br className="hidden sm:inline" />{" "}
-            people remember.
+            and the kind of<br className="hidden sm:inline" />{" "}
+            kitchen love people remember.
           </h1>
 
           {/* Body */}
           <p
-            className="mt-6 max-w-[52ch] text-[1.05rem] leading-[1.75] text-[var(--color-warm-brown)] sm:text-[1.15rem]"
+            data-reveal
+            className="reveal-delay-2 mt-6 max-w-[52ch] text-[1.05rem] leading-[1.8] text-[var(--color-warm-brown)] sm:text-[1.1rem]"
           >
             {hero.body}
           </p>
 
           {/* Social stats */}
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div
+            data-reveal
+            className="reveal-delay-3 mt-8 flex flex-wrap gap-3"
+          >
             {socialStats.map((stat) => (
               <div
                 key={`${stat.source}-${stat.label}`}
-                className="rounded-xl border border-[var(--color-border)] bg-white/60 px-5 py-2.5 shadow-[var(--shadow-soft)] backdrop-blur"
+                className="card-lift rounded-xl border border-[var(--color-border)] bg-white/60 px-5 py-2.5 shadow-[var(--shadow-soft)] backdrop-blur"
               >
                 <p
                   className="text-2xl font-black text-[var(--color-cast-iron)]"
@@ -100,7 +109,7 @@ export function HeroSection() {
                 >
                   {stat.value}
                 </p>
-                <p className="mt-0.5 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                <p className="mt-0.5 text-[0.65rem] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
                   {stat.label}
                 </p>
               </div>
@@ -108,10 +117,13 @@ export function HeroSection() {
           </div>
 
           {/* CTAs */}
-          <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
+          <div
+            data-reveal
+            className="reveal-delay-4 mt-9 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap"
+          >
             <a
               href="#contact"
-              className="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-[var(--color-tomato)] px-8 text-[0.95rem] font-black text-white shadow-[var(--shadow-button)] transition hover:-translate-y-0.5 hover:bg-[var(--color-tomato-dark)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+              className="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-[var(--color-tomato)] px-8 text-[0.95rem] font-black text-white shadow-[var(--shadow-button)] transition-all duration-250 hover:-translate-y-1 hover:bg-[var(--color-tomato-dark)] hover:shadow-[0_20px_48px_rgba(185,71,27,0.38)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             >
               {hero.primaryCta}
               <ArrowRight size={18} aria-hidden="true" />
@@ -120,7 +132,8 @@ export function HeroSection() {
               href={socialLinks.tiktok}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border-2 border-[var(--color-cast-iron)] bg-transparent px-8 text-[0.95rem] font-black text-[var(--color-cast-iron)] transition hover:bg-[var(--color-cast-iron)] hover:text-[var(--color-cream)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+              aria-label="Watch Grandma Willie's kitchen videos on TikTok (opens in new tab)"
+              className="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full border-2 border-[var(--color-cast-iron)] bg-transparent px-8 text-[0.95rem] font-black text-[var(--color-cast-iron)] transition-all duration-250 hover:-translate-y-0.5 hover:bg-[var(--color-cast-iron)] hover:text-[var(--color-cream)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             >
               <Play size={17} aria-hidden="true" />
               {hero.secondaryCta}
@@ -128,18 +141,22 @@ export function HeroSection() {
           </div>
 
           {/* Proof line */}
-          <p className="mt-7 text-[0.72rem] font-black uppercase tracking-[0.14em] text-[var(--color-muted)] opacity-70">
+          <p
+            data-reveal
+            className="reveal-delay-5 mt-7 text-[0.72rem] font-black uppercase tracking-[0.16em] text-[var(--color-muted)] opacity-70"
+          >
             {hero.proofLine}
           </p>
         </div>
 
-        {/* ── Right: Brand visual with real tactile food sticker ── */}
+        {/* ── Right: Brand visual ── */}
         <div
-          className="relative mx-auto w-full max-w-[26rem] pt-6 motion-safe:animate-[fadeScale_0.75s_ease-out_0.15s_both] lg:max-w-none"
+          data-reveal="scale"
+          className="reveal-delay-2 relative mx-auto w-full max-w-[26rem] pt-6 lg:max-w-none"
         >
-          {/* Floating brand indicator */}
+          {/* Creator brand badge */}
           <div
-            className="absolute -left-6 top-16 z-20 hidden rounded-2xl bg-[var(--color-cast-iron)] px-5 py-3.5 text-[var(--color-cream)] shadow-[var(--shadow-card)] sm:block"
+            className="absolute -left-6 top-16 z-20 hidden rounded-2xl bg-[var(--color-cast-iron)] px-5 py-3.5 text-[var(--color-cream)] shadow-[var(--shadow-card)] sm:block transition-transform duration-300 hover:-translate-y-0.5"
             aria-hidden="true"
           >
             <p className="text-[0.6rem] font-black uppercase tracking-[0.22em] text-[var(--color-gold)]">
@@ -153,22 +170,22 @@ export function HeroSection() {
             </p>
           </div>
 
-          {/* Floating real food preview card with handwritten style caption */}
+          {/* Floating food card with tilt on hover */}
           <div
-            className="absolute -bottom-8 -left-6 z-20 w-[180px] rotate-[-4deg] overflow-hidden rounded-2xl border-2 border-[var(--color-border-dark)] bg-[var(--color-paper)] p-2.5 shadow-[var(--shadow-card)] transition duration-300 hover:rotate-0 hover:scale-105"
+            className="absolute -bottom-8 -left-6 z-20 w-[180px] rotate-[-4deg] overflow-hidden rounded-2xl border-2 border-[var(--color-border-dark)] bg-[var(--color-paper)] p-2.5 shadow-[var(--shadow-card)] transition-all duration-400 hover:rotate-0 hover:scale-105 hover:shadow-[var(--shadow-editorial)]"
             aria-hidden="true"
           >
-            <div className="relative aspect-square overflow-hidden rounded-lg">
+            <div className="img-zoom-wrap relative aspect-square overflow-hidden rounded-lg">
               <Image
-                src="/images/01.png"
-                alt="Southern Style Fried Chicken"
+                src="/images/food-fried-chicken.png"
+                alt="Golden crispy Alabama fried chicken from Grandma Willie's kitchen"
                 fill
                 sizes="180px"
                 className="object-cover"
               />
             </div>
             <p
-              className="mt-2 text-center text-xs font-black text-[var(--color-cast-iron)] italic"
+              className="mt-2 text-center text-xs font-black italic text-[var(--color-cast-iron)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Alabama Fried Chicken
@@ -178,9 +195,9 @@ export function HeroSection() {
           {/* Decorative recipe card stacks */}
           <RecipeCardDecor className="-right-6 top-32 w-32 hidden lg:block motion-safe:animate-[driftSlow_9s_ease-in-out_infinite]" />
 
-          {/* Main logo card */}
+          {/* Main mascot card */}
           <div
-            className="relative overflow-hidden rounded-[2.2rem] p-3.5 shadow-[var(--shadow-editorial)] ring-2 ring-[var(--color-border)]"
+            className="relative overflow-hidden rounded-[2.2rem] p-3.5 shadow-[var(--shadow-editorial)] ring-2 ring-[var(--color-border)] transition-transform duration-400 hover:-translate-y-1"
             style={{ background: "var(--color-paper)" }}
           >
             <div
@@ -192,7 +209,7 @@ export function HeroSection() {
             >
               <Image
                 src={grandmaWillieContent.brand.mascot}
-                alt="Grandma Willie illustrated brand mascot holding a wooden spoon"
+                alt="Grandma Willie brand mascot — illustrated woman holding a wooden spoon, wearing an apron"
                 width={900}
                 height={1148}
                 className="h-full w-full object-contain object-bottom"
@@ -203,8 +220,8 @@ export function HeroSection() {
 
           {/* Follow handle badge */}
           <div
-            className="absolute -bottom-4 -right-2 z-20 rounded-2xl border border-[var(--color-border)] bg-[var(--color-paper)] px-4 py-3 shadow-[var(--shadow-card)]"
-            aria-hidden="true"
+            className="absolute -bottom-4 -right-2 z-20 rounded-2xl border border-[var(--color-border)] bg-[var(--color-paper)] px-4 py-3 shadow-[var(--shadow-card)] transition-transform duration-300 hover:-translate-y-0.5"
+            aria-label="Follow Grandma Willie on TikTok at @will46shelby"
           >
             <p className="text-[0.62rem] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
               Follow along

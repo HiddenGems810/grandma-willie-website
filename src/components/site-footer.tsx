@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { grandmaWillieContent, navItems } from "@/content/grandma-willie";
 
 function TikTokIcon() {
@@ -20,7 +19,7 @@ function InstagramIcon() {
 }
 
 export function SiteFooter() {
-  const { brand, socialLinks } = grandmaWillieContent;
+  const { brand, socialLinks, statsLastUpdated } = grandmaWillieContent;
   const year = new Date().getFullYear();
 
   return (
@@ -44,18 +43,20 @@ export function SiteFooter() {
           <div>
             <a
               href="#"
-              className="inline-flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded-lg"
+              className="inline-flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
               aria-label="Back to top"
             >
-              <span className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-white/20">
-                <Image
-                  src={brand.mascot}
-                  alt=""
-                  fill
-                  sizes="48px"
-                  className="object-cover object-top"
-                />
-              </span>
+              {/* SVG mascot — vector-sharp at all sizes */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/grandma-willie-mascot.svg"
+                alt=""
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-full ring-2 ring-white/20 object-cover bg-[var(--color-butter)]"
+                loading="lazy"
+                decoding="async"
+              />
               <span
                 className="text-xl font-black leading-none text-[var(--color-cream)]"
                 style={{ fontFamily: "var(--font-display)" }}
@@ -63,7 +64,7 @@ export function SiteFooter() {
                 {brand.name}
               </span>
             </a>
-            <p className="mt-4 max-w-[36ch] text-[0.9rem] leading-[1.7] text-[color-mix(in_srgb,var(--color-cream)_65%,transparent)]">
+            <p className="mt-4 max-w-[36ch] text-[0.9rem] leading-[1.75] text-[color-mix(in_srgb,var(--color-cream)_65%,transparent)]">
               Alabama roots, family warmth, and homestyle cooking made with love —
               shared across TikTok and Instagram.
             </p>
@@ -71,7 +72,7 @@ export function SiteFooter() {
 
           {/* Nav links */}
           <div>
-            <p className="text-[0.64rem] font-black uppercase tracking-[0.24em] text-[var(--color-gold)] mb-4">
+            <p className="text-[0.66rem] font-black uppercase tracking-[0.24em] text-[var(--color-gold)] mb-4">
               Navigate
             </p>
             <nav aria-label="Footer navigation">
@@ -80,7 +81,7 @@ export function SiteFooter() {
                   <li key={item.href}>
                     <a
                       href={item.href}
-                      className="text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
+                      className="text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
                     >
                       {item.label}
                     </a>
@@ -92,7 +93,7 @@ export function SiteFooter() {
 
           {/* Social links */}
           <div>
-            <p className="text-[0.64rem] font-black uppercase tracking-[0.24em] text-[var(--color-gold)] mb-4">
+            <p className="text-[0.66rem] font-black uppercase tracking-[0.24em] text-[var(--color-gold)] mb-4">
               Follow Along
             </p>
             <div className="flex flex-col gap-3">
@@ -100,8 +101,8 @@ export function SiteFooter() {
                 href={socialLinks.tiktok}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="TikTok — @will46shelby"
-                className="inline-flex items-center gap-2.5 text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
+                aria-label="TikTok — @will46shelby (opens in new tab)"
+                className="inline-flex items-center gap-2.5 text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
               >
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-white/8 transition hover:bg-white/16">
                   <TikTokIcon />
@@ -112,8 +113,8 @@ export function SiteFooter() {
                 href={socialLinks.instagram}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Instagram — grandmawillie184"
-                className="inline-flex items-center gap-2.5 text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
+                aria-label="Instagram — @grandmawillie184 (opens in new tab)"
+                className="inline-flex items-center gap-2.5 text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
               >
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-white/8 transition hover:bg-white/16">
                   <InstagramIcon />
@@ -129,9 +130,15 @@ export function SiteFooter() {
           <p className="text-[0.78rem] text-[color-mix(in_srgb,var(--color-cream)_50%,transparent)]">
             &copy; {year} {brand.name}. All rights reserved.
           </p>
-          <p className="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--color-gold)] opacity-60">
-            Alabama Homestyle Cooking
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--color-gold)] opacity-60">
+              Alabama Homestyle Cooking
+            </p>
+            {/* Stats last-updated notice for transparency */}
+            <p className="hidden sm:block text-[0.62rem] text-white/20 tabular-nums">
+              Stats verified {statsLastUpdated}
+            </p>
+          </div>
         </div>
       </div>
     </footer>
