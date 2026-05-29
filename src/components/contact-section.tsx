@@ -124,8 +124,17 @@ export function ContactSection() {
 
     setFormState("submitting");
     try {
-      // Simulated secure submission endpoint
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        console.error("[contact] API error:", json);
+        setFormState("error");
+        return;
+      }
       setFormState("success");
     } catch {
       setFormState("error");
