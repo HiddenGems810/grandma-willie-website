@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────
+   DESIGN SYSTEM — Grandma Willie
+   Southern Cookbook Editorial × Premium Creator
+───────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette */
+  --color-cream:        #FFF3D7;
+  --color-butter:       #F8DFA4;
+  --color-paper:        #FFF9EC;
+  --color-tomato:       #B9471B;
+  --color-tomato-dark:  #8E2410;
+  --color-cast-iron:    #140B07;
+  --color-leaf:         #2B5338;
+  --color-leaf-soft:    #D6E8CE;
+  --color-warm-brown:   #6B351C;
+  --color-gold:         #E8B84B;
+  --color-gold-soft:    #F9E49A;
+  --color-muted:        #6B351C;
+  --color-border:       rgba(80, 45, 20, 0.14);
+  --color-border-dark:  rgba(80, 45, 20, 0.26);
+  --color-line:         rgba(80, 45, 20, 0.14);
+
+  /* Semantic tokens */
+  --background:         var(--color-cream);
+  --surface:            var(--color-paper);
+  --surface-elevated:   #ffffff;
+  --text-primary:       var(--color-cast-iron);
+  --text-secondary:     var(--color-warm-brown);
+
+  /* Shadows */
+  --shadow-soft:        0 8px 32px rgba(64, 31, 10, 0.10);
+  --shadow-card:        0 24px 80px rgba(64, 31, 10, 0.18);
+  --shadow-button:      0 14px 32px rgba(185, 71, 27, 0.28);
+  --shadow-editorial:   0 32px 100px rgba(64, 31, 10, 0.16);
+
+  /* Shape */
+  --radius-card:        22px;
+  --radius-button:      999px;
+
+  /* Spacing */
+  --section-y-sm:       72px;
+  --section-y-md:       112px;
+  --section-y-lg:       148px;
+  --container:          1200px;
+
+  /* Typography */
+  --font-display:       var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-body:          var(--font-dm-sans), system-ui, Arial, sans-serif;
+
+  /* Legacy aliases for existing components */
+  --color-ink:          var(--color-cast-iron);
+  --color-red:          var(--color-tomato);
+  --color-red-dark:     var(--color-tomato-dark);
+  --color-green:        var(--color-leaf);
+  --color-green-soft:   var(--color-leaf-soft);
+  --color-cream-strong: var(--color-butter);
+  --color-brown:        var(--color-warm-brown);
+  --color-accent:       var(--color-tomato);
+  --shadow-button:      var(--shadow-button);
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-foreground: var(--text-primary);
+  --font-sans:        var(--font-dm-sans);
+  --font-serif:       var(--font-fraunces);
+  --font-mono:        var(--font-dm-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ─────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle linen paper texture overlay */
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  content: "";
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(80, 45, 20, 0.028) 0 1px,
+      transparent 1px 5px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(80, 45, 20, 0.018) 0 1px,
+      transparent 1px 8px
+    );
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-cast-iron);
+}
+
+img, svg, iframe {
+  max-width: 100%;
+}
+
+/* ─── Typography Utilities ──────────────────── */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* ─── Animations ────────────────────────────── */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes revealMask {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes driftSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-6px) rotate(0.4deg); }
+  66%       { transform: translateY(4px) rotate(-0.3deg); }
+}
+
+@keyframes formSuccess {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── Reduced Motion ────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ─── Scrollbar ─────────────────────────────── */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-cream); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 99px;
+  border: 2px solid var(--color-cream);
 }
