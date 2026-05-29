@@ -41,7 +41,7 @@ export function SiteHeader() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-[var(--color-butter)] ring-2 ring-[var(--color-border)] transition-transform hover:scale-105">
               <img
-                src="/logos/grandma-willie-mascot.svg"
+                src="/logos/grandma-willie-mascot.png"
                 alt=""
                 width={44}
                 height={44}

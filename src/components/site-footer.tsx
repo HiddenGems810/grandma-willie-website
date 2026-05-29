@@ -49,11 +49,11 @@ export function SiteFooter() {
               {/* SVG mascot — vector-sharp at all sizes */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logos/grandma-willie-mascot.svg"
+                src="/logos/grandma-willie-mascot.png"
                 alt=""
                 width={48}
                 height={48}
-                className="h-12 w-12 rounded-full ring-2 ring-white/20 object-cover bg-[var(--color-butter)]"
+                className="h-12 w-12 rounded-full ring-2 ring-white/20 object-cover object-top bg-[var(--color-butter)]"
                 loading="lazy"
                 decoding="async"
               />
