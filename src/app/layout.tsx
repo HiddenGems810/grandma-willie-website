@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     description: seo.description,
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Grandma Willie — Alabama Homestyle Cooking Creator",
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: seo.title,
     description: seo.description,
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
     creator: "@will46shelby",
     site: "@will46shelby",
   },
