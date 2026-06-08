@@ -1,8 +1,6 @@
-"use client";
-
 import { ArrowRight } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
-import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { ScrollRevealSection } from "@/components/scroll-reveal-section";
 
 function TikTokIcon() {
   return (
@@ -48,12 +46,10 @@ const cardAccents = {
 
 export function FeaturedMoments() {
   const { follow, socialDestinations } = grandmaWillieContent;
-  const sectionRef = useScrollReveal();
 
   return (
-    <section
+    <ScrollRevealSection
       id="follow"
-      ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative overflow-hidden px-5 py-[var(--section-y-md)] sm:px-8 lg:px-12"
       style={{ background: "var(--color-butter)" }}
       aria-labelledby="follow-heading"
@@ -156,6 +152,6 @@ export function FeaturedMoments() {
           })}
         </div>
       </div>
-    </section>
+    </ScrollRevealSection>
   );
 }

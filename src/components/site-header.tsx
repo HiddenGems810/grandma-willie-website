@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Menu, X, CalendarDays } from "lucide-react";
 import { grandmaWillieContent, navItems } from "@/content/grandma-willie";
 
@@ -34,8 +35,8 @@ export function SiteHeader() {
         <div className="mx-auto flex h-[76px] max-w-[var(--container)] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
 
           {/* Logo */}
-          <a
-            href="#"
+          <Link
+            href="/"
             className="flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             aria-label="Grandma Willie — return to top"
           >
@@ -56,7 +57,7 @@ export function SiteHeader() {
             >
               {grandmaWillieContent.brand.name}
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <nav
@@ -64,33 +65,33 @@ export function SiteHeader() {
             aria-label="Primary navigation"
           >
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className="nav-link text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--color-warm-brown)] transition-colors duration-200 hover:text-[var(--color-tomato)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded pb-0.5"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           {/* Desktop CTA */}
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="hidden min-h-[44px] items-center gap-2 rounded-full bg-[var(--color-cast-iron)] px-5 text-sm font-black text-[var(--color-cream)] shadow-[0_8px_24px_rgba(20,11,7,0.22)] transition-all duration-250 hover:-translate-y-0.5 hover:bg-[var(--color-tomato)] hover:shadow-[0_12px_32px_rgba(185,71,27,0.32)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] md:inline-flex"
           >
             <CalendarDays size={16} aria-hidden="true" />
             Book / Contact
-          </a>
+          </Link>
 
           {/* Mobile: book pill + hamburger */}
           <div className="flex items-center gap-2 md:hidden">
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="inline-flex min-h-[40px] items-center rounded-full bg-[var(--color-cast-iron)] px-4 text-xs font-black text-[var(--color-cream)] transition hover:bg-[var(--color-tomato)]"
             >
               Book
-            </a>
+            </Link>
             <button
               type="button"
               aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -119,7 +120,7 @@ export function SiteHeader() {
             aria-label="Mobile navigation links"
           >
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
@@ -127,16 +128,16 @@ export function SiteHeader() {
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               onClick={() => setMenuOpen(false)}
               className="mt-8 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-full bg-[var(--color-tomato)] px-8 text-base font-black text-white shadow-[var(--shadow-button)] transition hover:bg-[var(--color-tomato-dark)]"
             >
               <CalendarDays size={18} aria-hidden="true" />
               Book / Contact Grandma Willie
-            </a>
+            </Link>
           </nav>
 
           {/* Social quick links in mobile menu */}

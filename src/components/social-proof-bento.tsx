@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Script from "next/script";
 import { ArrowRight, Play, Eye } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
@@ -345,13 +346,13 @@ export function SocialProofBento() {
             <p className="mt-3 flex-1 text-[0.95rem] leading-[1.8] text-white/85">
               Whether it&apos;s a brand partnership, cooking feature, community event, or booking inquiry — use the form and the team will be in touch within 2–3 business days.
             </p>
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="mt-6 inline-flex min-h-[48px] items-center gap-2.5 self-start rounded-full bg-[var(--color-cast-iron)] px-6 text-sm font-black text-[var(--color-cream)] shadow-[0_12px_32px_rgba(20,11,7,0.35)] transition hover:-translate-y-0.5 hover:bg-[color-mix(in_srgb,var(--color-cast-iron)_85%,white)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             >
               Send Booking Inquiry
               <ArrowRight size={15} aria-hidden="true" />
-            </a>
+            </Link>
           </article>
         </div>
       </div>

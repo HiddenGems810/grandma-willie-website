@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 31536000, // 1 year
     deviceSizes: [375, 640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [64, 128, 180, 260, 320, 640],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "files.cdn.printful.com",
+      },
+    ],
   },
 
   // Security + performance headers

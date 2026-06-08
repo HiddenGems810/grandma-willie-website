@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useId } from "react";
+import Link from "next/link";
 import { CheckCircle, Loader, AlertCircle, Mail, Check, ArrowRight } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
@@ -549,12 +550,12 @@ export function ContactSection() {
         className="fixed inset-x-4 bottom-4 z-40 flex gap-2 rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-cream)_92%,white)] p-2 shadow-[var(--shadow-card)] backdrop-blur-xl sm:hidden"
         aria-label="Quick actions"
       >
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className="inline-flex min-h-[40px] flex-1 items-center justify-center rounded-full bg-[var(--color-cast-iron)] px-3 text-xs font-black text-[var(--color-cream)] transition hover:bg-[var(--color-tomato)]"
         >
           Book / Contact
-        </a>
+        </Link>
         <a
           href={grandmaWillieContent.socialLinks.tiktok}
           target="_blank"

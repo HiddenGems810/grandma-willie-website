@@ -138,7 +138,7 @@ export const grandmaWillieContent = {
       label: "Send Inquiry",
       description:
         "For collaborations, cooking features, interviews, and bookings — reach out directly.",
-      href: "#contact",
+      href: "/#contact",
       kind: "anchor",
       source: "Contact",
     },
@@ -160,8 +160,9 @@ export const grandmaWillieContent = {
 } as const;
 
 export const navItems = [
-  { label: "Story", href: "#about" },
-  { label: "Videos", href: "#videos" },
-  { label: "Follow", href: "#follow" },
-  { label: "Contact", href: "#contact" },
+  { label: "Story", href: "/#about" },
+  { label: "Videos", href: "/#videos" },
+  { label: "Shop", href: "/shop" },
+  { label: "Follow", href: "/#follow" },
+  { label: "Contact", href: "/#contact" },
 ];

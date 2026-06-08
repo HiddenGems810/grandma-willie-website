@@ -1,9 +1,8 @@
-"use client";
-
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
-import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { ScrollRevealSection } from "@/components/scroll-reveal-section";
 
 function RecipeCardDecor({ className = "" }: { className?: string }) {
   return (
@@ -23,12 +22,10 @@ function RecipeCardDecor({ className = "" }: { className?: string }) {
 
 export function HeroSection() {
   const { hero, socialStats, socialLinks } = grandmaWillieContent;
-  const sectionRef = useScrollReveal();
 
   return (
-    <section
+    <ScrollRevealSection
       id="home"
-      ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative isolate overflow-hidden px-5 pb-24 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pb-28 lg:pt-20"
       aria-labelledby="hero-heading"
     >
@@ -121,13 +118,13 @@ export function HeroSection() {
             data-reveal
             className="reveal-delay-4 mt-9 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap"
           >
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-[var(--color-tomato)] px-8 text-[0.95rem] font-black text-white shadow-[var(--shadow-button)] transition-all duration-250 hover:-translate-y-1 hover:bg-[var(--color-tomato-dark)] hover:shadow-[0_20px_48px_rgba(185,71,27,0.38)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
             >
               {hero.primaryCta}
               <ArrowRight size={18} aria-hidden="true" />
-            </a>
+            </Link>
             <a
               href={socialLinks.tiktok}
               target="_blank"
@@ -235,6 +232,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-    </section>
+    </ScrollRevealSection>
   );
 }

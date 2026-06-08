@@ -2,18 +2,22 @@
 
 import { useEffect, useRef } from "react";
 
-/**
- * Attaches an IntersectionObserver to a client component's root element.
- * Descendants with [data-reveal] receive the "revealed" class when in view.
- */
-export function useScrollReveal(threshold = 0.12) {
-  const containerRef = useRef<HTMLElement | null>(null);
+type ScrollRevealSectionProps = React.ComponentPropsWithoutRef<"section"> & {
+  threshold?: number;
+};
+
+export function ScrollRevealSection({
+  children,
+  threshold = 0.12,
+  ...props
+}: ScrollRevealSectionProps) {
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const section = sectionRef.current;
+    if (!section) return;
 
-    const targets = container.querySelectorAll<HTMLElement>("[data-reveal]");
+    const targets = section.querySelectorAll<HTMLElement>("[data-reveal]");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,5 +34,9 @@ export function useScrollReveal(threshold = 0.12) {
     return () => observer.disconnect();
   }, [threshold]);
 
-  return containerRef;
+  return (
+    <section ref={sectionRef} {...props}>
+      {children}
+    </section>
+  );
 }

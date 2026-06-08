@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { grandmaWillieContent, navItems } from "@/content/grandma-willie";
 
 function TikTokIcon() {
@@ -41,8 +42,8 @@ export function SiteFooter() {
 
           {/* Brand */}
           <div>
-            <a
-              href="#"
+            <Link
+              href="/"
               className="inline-flex items-center gap-3 rounded-lg transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
               aria-label="Back to top"
             >
@@ -63,7 +64,7 @@ export function SiteFooter() {
               >
                 {brand.name}
               </span>
-            </a>
+            </Link>
             <p className="mt-4 max-w-[36ch] text-[0.9rem] leading-[1.75] text-[color-mix(in_srgb,var(--color-cream)_65%,transparent)]">
               Alabama roots, family warmth, and homestyle cooking made with love —
               shared across TikTok and Instagram.
@@ -79,12 +80,12 @@ export function SiteFooter() {
               <ul className="space-y-3">
                 {navItems.map((item) => (
                   <li key={item.href}>
-                    <a
+                    <Link
                       href={item.href}
                       className="text-sm font-medium text-[color-mix(in_srgb,var(--color-cream)_70%,transparent)] transition hover:text-[var(--color-cream)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] rounded"
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

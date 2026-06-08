@@ -1,9 +1,7 @@
-"use client";
-
 import Image from "next/image";
 import { Home, Heart, Utensils } from "lucide-react";
 import { grandmaWillieContent } from "@/content/grandma-willie";
-import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { ScrollRevealSection } from "@/components/scroll-reveal-section";
 
 const iconMap = {
   home: Home,
@@ -13,12 +11,10 @@ const iconMap = {
 
 export function AboutSection() {
   const { bio, brand } = grandmaWillieContent;
-  const sectionRef = useScrollReveal();
 
   return (
-    <section
+    <ScrollRevealSection
       id="about"
-      ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative overflow-hidden px-5 py-[var(--section-y-md)] sm:px-8 lg:px-12"
       style={{ background: "var(--color-cast-iron)" }}
       aria-labelledby="about-heading"
@@ -170,6 +166,6 @@ export function AboutSection() {
           </div>
         </div>
       </div>
-    </section>
+    </ScrollRevealSection>
   );
 }
