@@ -124,19 +124,13 @@ export default async function ShopPage() {
                     className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]"
                   >
                     <div className="relative aspect-[4/3] bg-[var(--color-butter)]">
-                      {product.image ? (
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="grid h-full place-items-center px-6 text-center text-sm font-black uppercase tracking-[0.18em] text-[var(--color-warm-brown)]">
-                          Image coming soon
-                        </div>
-                      )}
+                      <Image
+                        src={`/api/product-images/${product.id}`}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                      />
                     </div>
 
                     <div className="flex flex-1 flex-col p-6">
@@ -154,7 +148,15 @@ export default async function ShopPage() {
                       </p>
                       <div className="mt-auto">
                         <ProductBuyForm
-                          product={product}
+                          product={{
+                            id: product.id,
+                            name: product.name,
+                            variants: product.variants.map((variant) => ({
+                              id: variant.id,
+                              name: variant.name,
+                              price: variant.price,
+                            })),
+                          }}
                           paypalClientId={paypalClientId}
                         />
                       </div>

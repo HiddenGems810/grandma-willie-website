@@ -3,10 +3,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ShoppingBag } from "lucide-react";
 import { PAYPAL_SDK_READY_EVENT } from "@/components/paypal-sdk-loader";
-import type { StoreProduct } from "@/lib/printful";
-
 type ProductBuyFormProps = {
-  product: StoreProduct;
+  product: {
+    id: number;
+    name: string;
+    variants: Array<{
+      id: number;
+      name: string;
+      price: number | null;
+    }>;
+  };
   paypalClientId: string;
 };
 
