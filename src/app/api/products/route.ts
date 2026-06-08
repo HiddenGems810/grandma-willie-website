@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  type StoreProduct,
   getPrintfulProducts,
   PrintfulApiError,
   PrintfulConfigError,
@@ -8,13 +9,28 @@ import {
 
 export const revalidate = 3600;
 
+function publicProduct(product: StoreProduct) {
+  return {
+    id: product.id,
+    name: product.name,
+    image: `/api/product-images/${product.id}`,
+    priceLabel: product.priceLabel,
+    variants: product.variants.map((variant) => ({
+      id: variant.id,
+      name: variant.name,
+      price: variant.price,
+      currency: variant.currency,
+    })),
+  };
+}
+
 export async function GET() {
   try {
     const products = await getPrintfulProducts();
 
     return NextResponse.json(
       {
-        products,
+        products: products.map(publicProduct),
         revalidate: productRevalidateSeconds(),
       },
       {
