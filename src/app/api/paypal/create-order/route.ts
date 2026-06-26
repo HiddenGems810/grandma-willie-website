@@ -3,7 +3,7 @@ import { createPayPalOrder, PayPalApiError, PayPalConfigError } from "@/lib/payp
 import { getPrintfulProduct, PrintfulApiError, PrintfulConfigError } from "@/lib/printful";
 
 type CreateOrderPayload = {
-  syncProductId: number;
+  syncProductId: string;
   syncVariantId: number;
   quantity?: number;
 };
@@ -12,12 +12,15 @@ function parsePayload(body: unknown): CreateOrderPayload | null {
   if (!body || typeof body !== "object") return null;
 
   const candidate = body as Record<string, unknown>;
-  const syncProductId = Number(candidate.syncProductId);
+  const syncProductId =
+    typeof candidate.syncProductId === "string" || typeof candidate.syncProductId === "number"
+      ? String(candidate.syncProductId)
+      : "";
   const syncVariantId = Number(candidate.syncVariantId);
   const quantity = candidate.quantity === undefined ? 1 : Number(candidate.quantity);
 
   if (
-    !Number.isInteger(syncProductId) ||
+    !/^(template-\d+|\d+)$/.test(syncProductId) ||
     !Number.isInteger(syncVariantId) ||
     !Number.isInteger(quantity) ||
     quantity < 1 ||
@@ -62,7 +65,9 @@ export async function POST(req: Request) {
       unitAmount: variant.price,
       metadata: {
         syncProductId: product.id,
-        syncVariantId: variant.id,
+        syncVariantId: variant.syncProductId ? variant.id : undefined,
+        catalogVariantId: variant.catalogVariantId,
+        productTemplateId: variant.productTemplateId,
         quantity: payload.quantity ?? 1,
       },
     });

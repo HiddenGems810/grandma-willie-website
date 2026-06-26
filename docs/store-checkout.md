@@ -4,7 +4,7 @@ This project uses Printful for synced products and fulfillment, and PayPal Check
 
 ## Payment / Fulfillment Flow
 
-1. `/shop` loads synced products from Printful on the server.
+1. `/shop` loads synced products and the latest tee template from Printful on the server.
 2. The shopper approves and pays through PayPal Checkout.
 3. The backend captures the PayPal order through `/api/paypal/capture-order`.
 4. Only after PayPal capture succeeds, the backend creates the Printful order.
@@ -18,6 +18,7 @@ Local `.env.local` and Vercel project settings need:
 
 ```txt
 PRINTFUL_API_KEY=
+PRINTFUL_STORE_ID=
 NEXT_PUBLIC_SITE_URL=
 PRINTFUL_PRODUCT_REVALIDATE_SECONDS=300
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=

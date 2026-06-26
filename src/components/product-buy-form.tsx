@@ -5,7 +5,7 @@ import { ShoppingBag } from "lucide-react";
 import { PAYPAL_SDK_READY_EVENT } from "@/components/paypal-sdk-loader";
 type ProductBuyFormProps = {
   product: {
-    id: number;
+    id: string;
     name: string;
     variants: Array<{
       id: number;
@@ -133,7 +133,7 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
       .catch(() => {
         setError("PayPal buttons could not be rendered.");
       });
-  }, [containerId, paypalClientId, product.id, purchasableVariants.length]);
+  }, [containerId, paypalClientId, product.id, purchasableVariants]);
 
   useEffect(() => {
     renderPayPalButtons();

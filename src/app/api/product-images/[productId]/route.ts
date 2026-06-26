@@ -11,13 +11,12 @@ type ProductImageRouteContext = {
 
 export async function GET(_req: Request, context: ProductImageRouteContext) {
   const { productId } = await context.params;
-  const id = Number(productId);
 
-  if (!Number.isInteger(id)) {
+  if (!/^(template-\d+|\d+)$/.test(productId)) {
     return NextResponse.json({ error: "Invalid product image." }, { status: 400 });
   }
 
-  const product = await getPrintfulProduct(id);
+  const product = await getPrintfulProduct(productId);
 
   if (!product.image) {
     return NextResponse.json({ error: "Product image unavailable." }, { status: 404 });

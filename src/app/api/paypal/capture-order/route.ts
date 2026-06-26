@@ -31,13 +31,18 @@ function paidItemFromCapture(capture: CapturedPayPalOrder) {
   try {
     const metadata = JSON.parse(customId) as {
       syncVariantId?: unknown;
+      catalogVariantId?: unknown;
+      productTemplateId?: unknown;
       quantity?: unknown;
     };
     const syncVariantId = Number(metadata.syncVariantId);
+    const catalogVariantId = Number(metadata.catalogVariantId);
+    const productTemplateId = Number(metadata.productTemplateId);
     const quantity = Number(metadata.quantity);
 
     if (
-      !Number.isInteger(syncVariantId) ||
+      (!Number.isInteger(syncVariantId) &&
+        (!Number.isInteger(catalogVariantId) || !Number.isInteger(productTemplateId))) ||
       !Number.isInteger(quantity) ||
       quantity < 1 ||
       quantity > 10
@@ -45,7 +50,12 @@ function paidItemFromCapture(capture: CapturedPayPalOrder) {
       return null;
     }
 
-    return { syncVariantId, quantity };
+    return {
+      syncVariantId: Number.isInteger(syncVariantId) ? syncVariantId : undefined,
+      catalogVariantId: Number.isInteger(catalogVariantId) ? catalogVariantId : undefined,
+      productTemplateId: Number.isInteger(productTemplateId) ? productTemplateId : undefined,
+      quantity,
+    };
   } catch {
     return null;
   }
@@ -127,6 +137,8 @@ export async function POST(req: Request) {
       items: [
         {
           syncVariantId: paidItem.syncVariantId,
+          catalogVariantId: paidItem.catalogVariantId,
+          productTemplateId: paidItem.productTemplateId,
           quantity: paidItem.quantity,
         },
       ],
