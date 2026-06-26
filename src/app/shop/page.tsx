@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { AlertCircle, ShoppingBag } from "lucide-react";
 import { PayPalSdkLoader } from "@/components/paypal-sdk-loader";
-import { ProductBuyForm } from "@/components/product-buy-form";
+import { ProductCard } from "@/components/product-card";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPrintfulProducts, PrintfulApiError, PrintfulConfigError } from "@/lib/printful";
@@ -119,49 +118,22 @@ export default async function ShopPage() {
             {products.length > 0 && (
               <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {products.map((product) => (
-                  <article
+                  <ProductCard
                     key={product.id}
-                    className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]"
-                  >
-                    <div className="relative aspect-[4/3] bg-[var(--color-butter)]">
-                      <Image
-                        src={`/api/product-images/${product.id}`}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    </div>
-
-                    <div className="flex flex-1 flex-col p-6">
-                      <p className="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[var(--color-tomato)]">
-                        Kitchen favorite
-                      </p>
-                      <h2
-                        className="mt-2 text-2xl font-black leading-tight text-[var(--color-cast-iron)]"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        {product.name}
-                      </h2>
-                      <p className="mt-3 text-lg font-black text-[var(--color-leaf)]">
-                        {product.priceLabel}
-                      </p>
-                      <div className="mt-auto">
-                        <ProductBuyForm
-                          product={{
-                            id: product.id,
-                            name: product.name,
-                            variants: product.variants.map((variant) => ({
-                              id: variant.id,
-                              name: variant.name,
-                              price: variant.price,
-                            })),
-                          }}
-                          paypalClientId={paypalClientId}
-                        />
-                      </div>
-                    </div>
-                  </article>
+                    product={{
+                      id: product.id,
+                      name: product.name,
+                      image: `/api/product-images/${product.id}`,
+                      priceLabel: product.priceLabel,
+                      variants: product.variants.map((variant) => ({
+                        id: variant.id,
+                        name: variant.name,
+                        image: `/api/product-images/${product.id}?variantId=${variant.id}`,
+                        price: variant.price,
+                      })),
+                    }}
+                    paypalClientId={paypalClientId}
+                  />
                 ))}
               </div>
             )}

@@ -63,6 +63,7 @@ type PrintfulCatalogVariant = {
   name: string;
   size?: string;
   color?: string;
+  image?: string;
   price?: string;
 };
 
@@ -250,7 +251,7 @@ function normalizeTemplateProduct(
       name: [variant.color, variant.size].filter(Boolean).join(" / ") || variant.name,
       price: TEE_RETAIL_PRICE,
       currency: "USD",
-      image: template.mockup_file_url ?? null,
+      image: variant.image ?? template.mockup_file_url ?? null,
     }));
 
   return {

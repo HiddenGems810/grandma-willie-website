@@ -10,10 +10,12 @@ type ProductBuyFormProps = {
     variants: Array<{
       id: number;
       name: string;
+      image?: string;
       price: number | null;
     }>;
   };
   paypalClientId: string;
+  onVariantChange?: (image: string) => void;
 };
 
 type PayPalButtonsActions = {
@@ -46,7 +48,7 @@ declare global {
   }
 }
 
-export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps) {
+export function ProductBuyForm({ product, paypalClientId, onVariantChange }: ProductBuyFormProps) {
   const purchasableVariants = product.variants.filter((variant) => variant.price !== null);
   const [variantId, setVariantId] = useState(purchasableVariants[0]?.id ?? 0);
   const [quantity, setQuantity] = useState(1);
@@ -147,6 +149,8 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
   function handleSelectionChange(nextVariantId: number) {
     setError("");
     setVariantId(nextVariantId);
+    const image = purchasableVariants.find((variant) => variant.id === nextVariantId)?.image;
+    if (image) onVariantChange?.(image);
   }
 
   if (purchasableVariants.length === 0) {

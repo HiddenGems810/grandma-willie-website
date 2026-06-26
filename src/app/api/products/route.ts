@@ -18,6 +18,7 @@ function publicProduct(product: StoreProduct) {
     variants: product.variants.map((variant) => ({
       id: variant.id,
       name: variant.name,
+      image: `/api/product-images/${product.id}?variantId=${variant.id}`,
       price: variant.price,
       currency: variant.currency,
     })),
