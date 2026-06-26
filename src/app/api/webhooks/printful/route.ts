@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json().catch(() => null);
-  if (!body || String(body.store) !== process.env.PRINTFUL_STORE_ID) {
+  if (!body || String(body.store) !== process.env.PRINTFUL_STORE_ID?.trim()) {
     return NextResponse.json({ error: "Invalid webhook." }, { status: 400 });
   }
 
