@@ -160,7 +160,7 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
   if (!paypalClientId) {
     return (
       <p className="mt-5 rounded-xl border border-[var(--color-border-dark)] bg-[var(--color-cream)] px-4 py-3 text-sm font-bold text-[var(--color-warm-brown)]">
-        Checkout is almost ready. Please check back soon.
+        Online ordering opens soon. Message Grandma Willie to order today.
       </p>
     );
   }

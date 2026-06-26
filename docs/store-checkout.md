@@ -19,6 +19,7 @@ Local `.env.local` and Vercel project settings need:
 ```txt
 PRINTFUL_API_KEY=
 NEXT_PUBLIC_SITE_URL=
+PRINTFUL_PRODUCT_REVALIDATE_SECONDS=300
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=
 PAYPAL_CLIENT_ID=
 PAYPAL_CLIENT_SECRET=
@@ -32,4 +33,4 @@ Keep `PRINTFUL_CONFIRM_ORDERS=false` while testing. Set it to `true` only when p
 
 ## Current Product Cache
 
-Printful product data is cached/revalidated every 3600 seconds to reduce API calls.
+Printful product data is cached/revalidated every 300 seconds by default to keep new products visible quickly without overloading the API. Override with `PRINTFUL_PRODUCT_REVALIDATE_SECONDS` when needed.

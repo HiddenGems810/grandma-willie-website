@@ -1,7 +1,7 @@
 import "server-only";
 
 const PRINTFUL_API_BASE = "https://api.printful.com";
-const PRODUCT_REVALIDATE_SECONDS = 3600;
+const DEFAULT_PRODUCT_REVALIDATE_SECONDS = 300;
 
 type PrintfulListResponse<T> = {
   code: number;
@@ -200,9 +200,10 @@ function normalizeProduct(detail: PrintfulSyncProductDetail): StoreProduct {
 }
 
 export async function getPrintfulProducts() {
+  const revalidate = productRevalidateSeconds();
   const list = await printfulFetch<PrintfulListResponse<PrintfulSyncProductSummary>>(
     "/store/products",
-    { next: { revalidate: PRODUCT_REVALIDATE_SECONDS } }
+    { next: { revalidate } }
   );
 
   const visibleProducts = list.result.filter((product) => !product.is_ignored);
@@ -211,7 +212,7 @@ export async function getPrintfulProducts() {
     visibleProducts.map(async (product) => {
       const detail = await printfulFetch<PrintfulObjectResponse<PrintfulSyncProductDetail>>(
         `/store/products/${product.id}`,
-        { next: { revalidate: PRODUCT_REVALIDATE_SECONDS } }
+        { next: { revalidate } }
       );
 
       return normalizeProduct(detail.result);
@@ -222,7 +223,7 @@ export async function getPrintfulProducts() {
 export async function getPrintfulProduct(syncProductId: number) {
   const detail = await printfulFetch<PrintfulObjectResponse<PrintfulSyncProductDetail>>(
     `/store/products/${syncProductId}`,
-    { next: { revalidate: PRODUCT_REVALIDATE_SECONDS } }
+    { next: { revalidate: productRevalidateSeconds() } }
   );
 
   return normalizeProduct(detail.result);
@@ -256,5 +257,11 @@ export async function createPrintfulOrder(params: CreatePrintfulOrderParams) {
 }
 
 export function productRevalidateSeconds() {
-  return PRODUCT_REVALIDATE_SECONDS;
+  const configured = Number(process.env.PRINTFUL_PRODUCT_REVALIDATE_SECONDS);
+
+  if (Number.isInteger(configured) && configured >= 60) {
+    return configured;
+  }
+
+  return DEFAULT_PRODUCT_REVALIDATE_SECONDS;
 }
