@@ -9,7 +9,7 @@ type ProductImageRouteContext = {
   }>;
 };
 
-export async function GET(req: Request, context: ProductImageRouteContext) {
+export async function GET(_req: Request, context: ProductImageRouteContext) {
   const { productId } = await context.params;
 
   if (!/^(template-\d+|\d+)$/.test(productId)) {
@@ -17,17 +17,12 @@ export async function GET(req: Request, context: ProductImageRouteContext) {
   }
 
   const product = await getPrintfulProduct(productId);
-  const variantId = Number(new URL(req.url).searchParams.get("variantId"));
-  const variantImage = Number.isInteger(variantId)
-    ? product.variants.find((variant) => variant.id === variantId)?.image
-    : null;
-  const image = variantImage ?? product.image;
 
-  if (!image) {
+  if (!product.image) {
     return NextResponse.json({ error: "Product image unavailable." }, { status: 404 });
   }
 
-  const imageRes = await fetch(image, {
+  const imageRes = await fetch(product.image, {
     next: { revalidate: 3600 },
   });
 

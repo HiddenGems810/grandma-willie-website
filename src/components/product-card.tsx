@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { ProductBuyForm } from "@/components/product-buy-form";
 
 type ProductCardProps = {
@@ -13,7 +12,6 @@ type ProductCardProps = {
     variants: Array<{
       id: number;
       name: string;
-      image: string;
       price: number | null;
     }>;
   };
@@ -21,13 +19,11 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, paypalClientId }: ProductCardProps) {
-  const [image, setImage] = useState(product.variants[0]?.image ?? product.image);
-
   return (
     <article className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
       <div className="relative aspect-[4/3] bg-[var(--color-butter)]">
         <Image
-          src={image}
+          src={product.image}
           alt={product.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -50,7 +46,6 @@ export function ProductCard({ product, paypalClientId }: ProductCardProps) {
           <ProductBuyForm
             product={product}
             paypalClientId={paypalClientId}
-            onVariantChange={setImage}
           />
         </div>
       </div>
