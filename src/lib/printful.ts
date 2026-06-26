@@ -2,6 +2,7 @@ import "server-only";
 
 const PRINTFUL_API_BASE = "https://api.printful.com";
 const DEFAULT_PRODUCT_REVALIDATE_SECONDS = 300;
+export const PRINTFUL_PRODUCTS_CACHE_TAG = "printful-products";
 
 type PrintfulListResponse<T> = {
   code: number;
@@ -123,7 +124,7 @@ function getPrintfulStoreId() {
 
 async function printfulFetch<T>(
   path: string,
-  init: RequestInit & { next?: { revalidate?: number } } = {}
+  init: RequestInit & { next?: { revalidate?: number; tags?: string[] } } = {}
 ) {
   const res = await fetch(`${PRINTFUL_API_BASE}${path}`, {
     ...init,
@@ -215,7 +216,7 @@ export async function getPrintfulProducts() {
   const revalidate = productRevalidateSeconds();
   const list = await printfulFetch<PrintfulListResponse<PrintfulSyncProductSummary>>(
     "/store/products",
-    { next: { revalidate } }
+    { next: { revalidate, tags: [PRINTFUL_PRODUCTS_CACHE_TAG] } }
   );
 
   const visibleProducts = list.result.filter((product) => !product.is_ignored);
@@ -224,7 +225,7 @@ export async function getPrintfulProducts() {
     visibleProducts.map(async (product) => {
       const detail = await printfulFetch<PrintfulObjectResponse<PrintfulSyncProductDetail>>(
         `/store/products/${product.id}`,
-        { next: { revalidate } }
+        { next: { revalidate, tags: [PRINTFUL_PRODUCTS_CACHE_TAG] } }
       );
 
       return normalizeProduct(detail.result);
@@ -235,7 +236,12 @@ export async function getPrintfulProducts() {
 export async function getPrintfulProduct(productId: string) {
   const detail = await printfulFetch<PrintfulObjectResponse<PrintfulSyncProductDetail>>(
     `/store/products/${productId}`,
-    { next: { revalidate: productRevalidateSeconds() } }
+    {
+      next: {
+        revalidate: productRevalidateSeconds(),
+        tags: [PRINTFUL_PRODUCTS_CACHE_TAG],
+      },
+    }
   );
 
   return normalizeProduct(detail.result);
