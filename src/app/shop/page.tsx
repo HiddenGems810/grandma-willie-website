@@ -125,7 +125,7 @@ export default async function ShopPage() {
                   >
                     <div className="relative aspect-[4/3] bg-[var(--color-butter)]">
                       <Image
-                        src={`/api/product-images/${product.id}`}
+                        src={`/api/product-images/${product.id}?v=${product.imageVersion}`}
                         alt={product.name}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

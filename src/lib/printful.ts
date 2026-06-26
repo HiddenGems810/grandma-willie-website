@@ -63,6 +63,7 @@ export type StoreProduct = {
   externalId: string | null;
   name: string;
   image: string | null;
+  imageVersion: string;
   synced: boolean;
   variants: StoreProductVariant[];
   priceLabel: string;
@@ -160,11 +161,16 @@ function parsePrice(value: string | undefined) {
 
 function variantImage(variant: PrintfulSyncVariant) {
   return (
-    variant.product?.image ??
+    variant.files?.find((file) => file.type === "preview" && file.preview_url)?.preview_url ??
     variant.files?.find((file) => file.preview_url)?.preview_url ??
     variant.files?.find((file) => file.thumbnail_url)?.thumbnail_url ??
+    variant.product?.image ??
     null
   );
+}
+
+function imageVersion(image: string | null) {
+  return image?.match(/\/files\/([^/]+)\//)?.[1] ?? "1";
 }
 
 function normalizeProduct(detail: PrintfulSyncProductDetail): StoreProduct {
@@ -196,6 +202,7 @@ function normalizeProduct(detail: PrintfulSyncProductDetail): StoreProduct {
     externalId: detail.sync_product.external_id ?? null,
     name: detail.sync_product.name,
     image,
+    imageVersion: imageVersion(image),
     synced: Boolean(detail.sync_product.synced),
     variants,
     priceLabel: firstPricedVariant
