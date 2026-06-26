@@ -12,7 +12,7 @@ type ProductImageRouteContext = {
 export async function GET(_req: Request, context: ProductImageRouteContext) {
   const { productId } = await context.params;
 
-  if (!/^(template-\d+|\d+)$/.test(productId)) {
+  if (!/^\d+$/.test(productId)) {
     return NextResponse.json({ error: "Invalid product image." }, { status: 400 });
   }
 

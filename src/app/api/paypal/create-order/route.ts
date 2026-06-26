@@ -20,7 +20,7 @@ function parsePayload(body: unknown): CreateOrderPayload | null {
   const quantity = candidate.quantity === undefined ? 1 : Number(candidate.quantity);
 
   if (
-    !/^(template-\d+|\d+)$/.test(syncProductId) ||
+    !/^\d+$/.test(syncProductId) ||
     !Number.isInteger(syncVariantId) ||
     !Number.isInteger(quantity) ||
     quantity < 1 ||
@@ -65,9 +65,7 @@ export async function POST(req: Request) {
       unitAmount: variant.price,
       metadata: {
         syncProductId: product.id,
-        syncVariantId: variant.syncProductId ? variant.id : undefined,
-        catalogVariantId: variant.catalogVariantId,
-        productTemplateId: variant.productTemplateId,
+        syncVariantId: variant.id,
         quantity: payload.quantity ?? 1,
       },
     });

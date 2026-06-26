@@ -4,7 +4,7 @@ This project uses Printful for synced products and fulfillment, and PayPal Check
 
 ## Payment / Fulfillment Flow
 
-1. `/shop` loads synced products and the latest tee template from Printful on the server.
+1. `/shop` loads published/synced products from Printful on the server.
 2. The shopper approves and pays through PayPal Checkout.
 3. The backend captures the PayPal order through `/api/paypal/capture-order`.
 4. Only after PayPal capture succeeds, the backend creates the Printful order.

@@ -2,8 +2,6 @@ import "server-only";
 
 const PRINTFUL_API_BASE = "https://api.printful.com";
 const DEFAULT_PRODUCT_REVALIDATE_SECONDS = 300;
-const TEE_PRODUCT_ID = 438;
-const TEE_RETAIL_PRICE = 28;
 
 type PrintfulListResponse<T> = {
   code: number;
@@ -49,34 +47,11 @@ type PrintfulSyncProductDetail = {
   sync_variants: PrintfulSyncVariant[];
 };
 
-type PrintfulProductTemplate = {
-  id: number;
-  product_id: number;
-  title: string;
-  available_variant_ids: number[];
-  mockup_file_url?: string;
-  updated_at: number;
-};
-
-type PrintfulCatalogVariant = {
-  id: number;
-  name: string;
-  size?: string;
-  color?: string;
-  price?: string;
-};
-
-type PrintfulCatalogProduct = {
-  variants: PrintfulCatalogVariant[];
-};
-
 export type StoreProductVariant = {
   id: number;
   syncProductId?: number;
-  productTemplateId?: number;
   externalId: string | null;
   printfulVariantId?: number;
-  catalogVariantId?: number;
   name: string;
   price: number | null;
   currency: string;
@@ -113,8 +88,6 @@ type CreatePrintfulOrderParams = {
   };
   items: Array<{
     syncVariantId?: number;
-    catalogVariantId?: number;
-    productTemplateId?: number;
     quantity: number;
   }>;
   confirm: boolean;
@@ -231,39 +204,6 @@ function normalizeProduct(detail: PrintfulSyncProductDetail): StoreProduct {
   };
 }
 
-function templateProductId(templateId: number) {
-  return `template-${templateId}`;
-}
-
-function normalizeTemplateProduct(
-  template: PrintfulProductTemplate,
-  catalog: PrintfulCatalogProduct
-): StoreProduct {
-  const available = new Set(template.available_variant_ids);
-  const variants = catalog.variants
-    .filter((variant) => available.has(variant.id))
-    .map<StoreProductVariant>((variant) => ({
-      id: variant.id,
-      productTemplateId: template.id,
-      catalogVariantId: variant.id,
-      externalId: null,
-      name: [variant.color, variant.size].filter(Boolean).join(" / ") || variant.name,
-      price: TEE_RETAIL_PRICE,
-      currency: "USD",
-      image: template.mockup_file_url ?? null,
-    }));
-
-  return {
-    id: templateProductId(template.id),
-    externalId: null,
-    name: "Grandma Willie Signature Tee",
-    image: template.mockup_file_url ?? null,
-    synced: true,
-    variants,
-    priceLabel: formatPrice(TEE_RETAIL_PRICE, "USD"),
-  };
-}
-
 export async function getPrintfulProducts() {
   const revalidate = productRevalidateSeconds();
   const list = await printfulFetch<PrintfulListResponse<PrintfulSyncProductSummary>>(
@@ -273,7 +213,7 @@ export async function getPrintfulProducts() {
 
   const visibleProducts = list.result.filter((product) => !product.is_ignored);
 
-  const syncProducts = await Promise.all(
+  return Promise.all(
     visibleProducts.map(async (product) => {
       const detail = await printfulFetch<PrintfulObjectResponse<PrintfulSyncProductDetail>>(
         `/store/products/${product.id}`,
@@ -283,55 +223,15 @@ export async function getPrintfulProducts() {
       return normalizeProduct(detail.result);
     })
   );
-
-  return [...syncProducts, ...(await getTemplateProducts())];
 }
 
 export async function getPrintfulProduct(productId: string) {
-  if (productId.startsWith("template-")) {
-    const templateId = Number(productId.replace("template-", ""));
-    const template = await getProductTemplate(templateId);
-    const catalog = await getCatalogProduct(template.product_id);
-    return normalizeTemplateProduct(template, catalog);
-  }
-
   const detail = await printfulFetch<PrintfulObjectResponse<PrintfulSyncProductDetail>>(
     `/store/products/${productId}`,
     { next: { revalidate: productRevalidateSeconds() } }
   );
 
   return normalizeProduct(detail.result);
-}
-
-export async function getProductTemplate(templateId: number) {
-  const detail = await printfulFetch<PrintfulObjectResponse<PrintfulProductTemplate>>(
-    `/product-templates/${templateId}`,
-    { next: { revalidate: productRevalidateSeconds() } }
-  );
-
-  return detail.result;
-}
-
-async function getCatalogProduct(productId: number) {
-  const detail = await printfulFetch<PrintfulObjectResponse<PrintfulCatalogProduct>>(
-    `/products/${productId}`,
-    { next: { revalidate: productRevalidateSeconds() } }
-  );
-
-  return detail.result;
-}
-
-async function getTemplateProducts() {
-  const templates = await printfulFetch<
-    PrintfulObjectResponse<{ items: PrintfulProductTemplate[] }>
-  >("/product-templates?limit=50", { next: { revalidate: productRevalidateSeconds() } });
-  const latestTee = templates.result.items
-    .filter((template) => template.product_id === TEE_PRODUCT_ID)
-    .sort((a, b) => b.updated_at - a.updated_at)[0];
-
-  if (!latestTee) return [];
-
-  return [normalizeTemplateProduct(latestTee, await getCatalogProduct(latestTee.product_id))];
 }
 
 export async function createPrintfulOrder(params: CreatePrintfulOrderParams) {
@@ -353,8 +253,6 @@ export async function createPrintfulOrder(params: CreatePrintfulOrderParams) {
         },
         items: params.items.map((item) => ({
           sync_variant_id: item.syncVariantId,
-          variant_id: item.catalogVariantId,
-          product_template_id: item.productTemplateId,
           quantity: item.quantity,
         })),
         confirm: params.confirm,

@@ -54,9 +54,7 @@ type CreatePayPalOrderParams = {
   unitAmount: number;
   metadata: {
     syncProductId: string;
-    syncVariantId?: number;
-    catalogVariantId?: number;
-    productTemplateId?: number;
+    syncVariantId: number;
     quantity: number;
   };
 };
