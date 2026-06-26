@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
     imageSizes: [64, 128, 180, 260, 320, 640],
     localPatterns: [
       {
+        pathname: "/images/**",
+        search: "",
+      },
+      {
+        pathname: "/logos/**",
+        search: "",
+      },
+      {
         pathname: "/api/product-images/**",
       },
     ],
