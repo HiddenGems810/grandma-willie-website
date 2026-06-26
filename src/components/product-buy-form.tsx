@@ -157,14 +157,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
     );
   }
 
-  if (!paypalClientId) {
-    return (
-      <p className="mt-5 rounded-xl border border-[var(--color-border-dark)] bg-[var(--color-cream)] px-4 py-3 text-sm font-bold text-[var(--color-warm-brown)]">
-        Online ordering opens soon. Message Grandma Willie to order today.
-      </p>
-    );
-  }
-
   return (
     <div className="mt-5 space-y-3">
       <label className="block">
@@ -204,7 +196,11 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
         </p>
       )}
 
-      {paid ? (
+      {!paypalClientId ? (
+        <p className="rounded-xl border border-[var(--color-border-dark)] bg-[var(--color-cream)] px-4 py-3 text-sm font-bold text-[var(--color-warm-brown)]">
+          Online ordering opens soon. Message Grandma Willie to order today.
+        </p>
+      ) : paid ? (
         <div className="rounded-xl border border-[var(--color-leaf)] bg-[color-mix(in_srgb,var(--color-leaf)_8%,white)] px-4 py-3 text-sm font-black text-[var(--color-leaf)]">
           Payment received. Your order has been placed.
         </div>
