@@ -51,7 +51,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
   const [variantId, setVariantId] = useState(purchasableVariants[0]?.id ?? 0);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [paid, setPaid] = useState(false);
   const containerId = `paypal-buttons-${product.id}`;
   const checkoutStateRef = useRef({
@@ -83,7 +82,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
         createOrder: async () => {
           const selected = checkoutStateRef.current;
           setError("");
-          setLoading(true);
 
           const res = await fetch("/api/paypal/create-order", {
             method: "POST",
@@ -98,7 +96,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
           const payload = (await res.json()) as { id?: string; error?: string };
 
           if (!res.ok || !payload.id) {
-            setLoading(false);
             throw new Error(payload.error ?? "Unable to create PayPal order.");
           }
 
@@ -115,8 +112,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
 
           const payload = (await res.json()) as { success?: boolean; error?: string };
 
-          setLoading(false);
-
           if (!res.ok || !payload.success) {
             setError(payload.error ?? "Payment captured, but fulfillment did not start.");
             return;
@@ -125,7 +120,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
           setPaid(true);
         },
         onError: () => {
-          setLoading(false);
           setError("PayPal checkout could not be completed.");
         },
       })
@@ -208,7 +202,6 @@ export function ProductBuyForm({ product, paypalClientId }: ProductBuyFormProps)
         <>
           <div
             id={containerId}
-            className={loading ? "pointer-events-none opacity-70" : ""}
             aria-label={`PayPal checkout for ${product.name}`}
           />
           <p className="flex items-center gap-1.5 text-[0.7rem] font-bold text-[var(--color-muted)]">
