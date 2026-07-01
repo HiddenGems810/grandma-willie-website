@@ -30,6 +30,13 @@ export type CapturedPayPalOrder = {
   };
   purchase_units?: Array<{
     custom_id?: string;
+    payments?: {
+      captures?: Array<{
+        id?: string;
+        status?: string;
+        custom_id?: string;
+      }>;
+    };
     shipping?: {
       name?: {
         full_name?: string;

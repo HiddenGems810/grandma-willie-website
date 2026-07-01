@@ -25,7 +25,10 @@ function parsePayload(body: unknown): CapturePayload | null {
 }
 
 function paidItemFromCapture(capture: CapturedPayPalOrder) {
-  const customId = capture.purchase_units?.[0]?.custom_id;
+  const unit = capture.purchase_units?.[0];
+  const customId =
+    unit?.payments?.captures?.find((payment) => payment.status === "COMPLETED")?.custom_id ??
+    unit?.custom_id;
   if (!customId) return null;
 
   try {
@@ -99,8 +102,11 @@ export async function POST(req: Request) {
 
   try {
     const capture = await capturePayPalOrder(payload.orderId);
+    const completedPayment = capture.purchase_units?.[0]?.payments?.captures?.some(
+      (payment) => payment.status === "COMPLETED"
+    );
 
-    if (capture.status !== "COMPLETED") {
+    if (capture.status !== "COMPLETED" || !completedPayment) {
       return NextResponse.json(
         { error: "PayPal payment was not completed.", status: capture.status },
         { status: 422 }

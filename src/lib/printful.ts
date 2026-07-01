@@ -249,7 +249,7 @@ export async function getPrintfulProduct(productId: string) {
 
 export async function createPrintfulOrder(params: CreatePrintfulOrderParams) {
   return printfulFetch<PrintfulObjectResponse<{ id: number; external_id: string }>>(
-    "/orders",
+    `/orders?confirm=${params.confirm ? "1" : "0"}&update_existing=1`,
     {
       method: "POST",
       body: JSON.stringify({
@@ -268,7 +268,6 @@ export async function createPrintfulOrder(params: CreatePrintfulOrderParams) {
           sync_variant_id: item.syncVariantId,
           quantity: item.quantity,
         })),
-        confirm: params.confirm,
       }),
     }
   );
